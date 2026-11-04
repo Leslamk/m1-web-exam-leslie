@@ -22,7 +22,10 @@ export const DeleteBikeButton = ({
   const onConfirm = () => {
     setIsDeleting(true);
     deleteBike()
-      .then(() => setIsOpen(false))
+      .then(() => {
+        setIsOpen(false);
+        message.success("Bike deleted");
+      })
       .catch((error) => {
         setIsOpen(false);
         if (isAxiosError(error) && error.response?.status === 409)
@@ -36,7 +39,12 @@ export const DeleteBikeButton = ({
 
   return (
     <>
-      <Button danger icon={<DeleteOutlined />} onClick={() => setIsOpen(true)}>
+      <Button
+        danger
+        icon={<DeleteOutlined />}
+        aria-label={`Delete ${bike.brand} ${bike.model}`}
+        onClick={() => setIsOpen(true)}
+      >
         {label}
       </Button>
       <Modal

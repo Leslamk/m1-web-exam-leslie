@@ -58,8 +58,9 @@ export const CustomersList = () => {
           current={page}
           pageSize={pageSize}
           total={totalCount}
-          showSizeChanger={false}
-          onChange={(nextPage) => load(nextPage)}
+          showSizeChanger
+          pageSizeOptions={[10, 20, 50]}
+          onChange={(nextPage, nextPageSize) => load(nextPage, nextPageSize)}
         />
       </Row>
     </Space>

@@ -1,5 +1,14 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Col, DatePicker, Input, Modal, Row, Typography } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Input,
+  Modal,
+  Row,
+  Typography,
+  message,
+} from "antd";
 import { isAxiosError } from "axios";
 import type { Dayjs } from "dayjs";
 import { useState } from "react";
@@ -77,7 +86,10 @@ export const AddCustomerButton = ({
 
     setIsSaving(true);
     createCustomer(toCreateCustomerModel(values))
-      .then(close)
+      .then(() => {
+        message.success("Customer added");
+        close();
+      })
       .catch((error) => {
         if (isAxiosError(error) && error.response?.status === 409) {
           setErrors({ email: "This email is already in use" });

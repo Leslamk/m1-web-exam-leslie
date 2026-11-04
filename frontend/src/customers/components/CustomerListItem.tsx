@@ -12,7 +12,7 @@ import { DeleteCustomerButton } from "./DeleteUserButton";
 
 interface CustomerListItemProps {
   customer: CustomerModel;
-  deleteCustomer: (id: string) => void;
+  deleteCustomer: (id: string) => void | Promise<unknown>;
 }
 
 export const CustomerListItem = ({
@@ -45,6 +45,7 @@ export const CustomerListItem = ({
             <ButtonLink
               to={`/customers/$customerId`}
               params={{ customerId: customer.id }}
+              aria-label={`View ${customer.firstName} ${customer.lastName}`}
             >
               <EyeOutlined />
             </ButtonLink>

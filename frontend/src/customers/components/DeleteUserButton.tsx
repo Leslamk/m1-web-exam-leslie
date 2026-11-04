@@ -1,11 +1,11 @@
 import { DeleteOutlined } from "@ant-design/icons";
-import { Button, Modal } from "antd";
+import { Button, Modal, message } from "antd";
 import { useState } from "react";
 import type { CustomerModel } from "../models/CustomerModel";
 
 interface DeleteCustomerButtonProps {
   customer: CustomerModel;
-  deleteCustomer: (id: string) => void;
+  deleteCustomer: (id: string) => void | Promise<unknown>;
 }
 export const DeleteCustomerButton = ({
   customer,
@@ -18,13 +18,19 @@ export const DeleteCustomerButton = ({
   };
 
   const onConfirm = () => {
-    deleteCustomer(customer.id);
     setIsOpen(false);
+    Promise.resolve(deleteCustomer(customer.id))
+      .then(() => message.success("Customer deleted"))
+      .catch(() => message.error("The customer could not be deleted"));
   };
 
   return (
     <>
-      <Button danger onClick={() => setIsOpen(true)}>
+      <Button
+        danger
+        aria-label={`Delete ${customer.firstName} ${customer.lastName}`}
+        onClick={() => setIsOpen(true)}
+      >
         <DeleteOutlined />
       </Button>
       <Modal

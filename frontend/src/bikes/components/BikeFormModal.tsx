@@ -127,7 +127,10 @@ export const BikeFormModal = ({
 
     setIsSaving(true);
     onSubmit(toCreateBikeModel(values))
-      .then(onCancel)
+      .then(() => {
+        message.success(bike ? "Bike updated" : "Bike added");
+        onCancel();
+      })
       // On failure, stay in the form so the changes are not lost
       .catch(() => message.error("The bike could not be saved"))
       .finally(() => setIsSaving(false));

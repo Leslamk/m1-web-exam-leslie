@@ -49,7 +49,11 @@ export const BikeListItem = ({ bike, deleteBike }: BikeListItemProps) => {
       <Col span={5}>
         <Row gutter={[4, 4]} justify="end">
           <Col>
-            <ButtonLink to="/bikes/$bikeId" params={{ bikeId: bike.id }}>
+            <ButtonLink
+              to="/bikes/$bikeId"
+              params={{ bikeId: bike.id }}
+              aria-label={`View ${bike.brand} ${bike.model}`}
+            >
               <EyeOutlined />
             </ButtonLink>
           </Col>

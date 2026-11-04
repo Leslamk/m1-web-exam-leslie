@@ -42,9 +42,8 @@ export const useCustomersProvider = () => {
   };
 
   // Reload the current page so the list and the total stay in sync with the backend
-  const deleteCustomer = (id: string) => {
+  const deleteCustomer = (id: string) =>
     axios.delete(`http://localhost:3000/customers/${id}`).then(() => load());
-  };
 
   // Returns the request so the caller can react to errors (e.g. email already in use)
   const createCustomer = (input: CreateCustomerModel) =>
