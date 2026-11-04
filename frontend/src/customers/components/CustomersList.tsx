@@ -1,4 +1,6 @@
-import { Pagination, Skeleton, Space } from "antd";
+import { ContactsOutlined } from "@ant-design/icons";
+import { Col, Pagination, Row, Skeleton, Space, Tag } from "antd";
+import Title from "antd/es/typography/Title";
 import { useEffect } from "react";
 import { useCustomersProvider } from "../providers/useCustomersProvider";
 import { AddCustomerButton } from "./AddCustomerButton";
@@ -21,8 +23,25 @@ export const CustomersList = () => {
   }, []);
 
   return (
-    <Space orientation="vertical" style={{ padding: ".25rem .5rem" }}>
-      <AddCustomerButton createCustomer={createCustomer} />
+    <Space
+      orientation="vertical"
+      size="middle"
+      style={{ padding: ".25rem .5rem" }}
+    >
+      <Row justify="space-between" align="middle" style={{ width: "100%" }}>
+        <Col>
+          <Space align="center">
+            <ContactsOutlined style={{ fontSize: "1.5rem" }} />
+            <Title level={2} style={{ margin: 0 }}>
+              Customers
+            </Title>
+            <Tag>{totalCount}</Tag>
+          </Space>
+        </Col>
+        <Col>
+          <AddCustomerButton createCustomer={createCustomer} />
+        </Col>
+      </Row>
       {isLoading ? (
         <Skeleton />
       ) : (
@@ -34,13 +53,15 @@ export const CustomersList = () => {
           />
         ))
       )}
-      <Pagination
-        current={page}
-        pageSize={pageSize}
-        total={totalCount}
-        showSizeChanger={false}
-        onChange={(nextPage) => load(nextPage)}
-      />
+      <Row justify="end">
+        <Pagination
+          current={page}
+          pageSize={pageSize}
+          total={totalCount}
+          showSizeChanger={false}
+          onChange={(nextPage) => load(nextPage)}
+        />
+      </Row>
     </Space>
   );
 };

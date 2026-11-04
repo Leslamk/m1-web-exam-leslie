@@ -1,11 +1,5 @@
-import {
-  EuroOutlined,
-  EyeOutlined,
-  ShoppingOutlined,
-  TagOutlined,
-  ThunderboltOutlined,
-} from "@ant-design/icons";
-import { Col, Row, Space } from "antd";
+import { EyeOutlined, ThunderboltOutlined } from "@ant-design/icons";
+import { Col, Row, Space, Tag } from "antd";
 import { ButtonLink } from "../../shared/components/ButtonLink";
 import { ListItem } from "../../shared/components/ListItem";
 import type { BikeModel } from "../models/BikeModel";
@@ -20,26 +14,39 @@ interface BikeListItemProps {
 export const BikeListItem = ({ bike, deleteBike }: BikeListItemProps) => {
   return (
     <ListItem>
-      <Col span={10}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <ShoppingOutlined />
-          {`${bike.brand} ${bike.model}`}
-          {bike.electric && <ThunderboltOutlined aria-label="Electric" />}
+      <Col span={9} style={{ display: "flex", alignItems: "center" }}>
+        <Space orientation="vertical" size={0} align="start">
+          <strong>{bike.brand}</strong>
+          {bike.model}
         </Space>
       </Col>
-      <Col span={6}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <TagOutlined />
-          {bike.category}
+      <Col span={5} style={{ display: "flex", alignItems: "center" }}>
+        <Space size={4}>
+          <Tag color="blue" style={{ margin: 0 }}>
+            {bike.category}
+          </Tag>
+          {bike.electric && (
+            <Tag
+              color="green"
+              icon={<ThunderboltOutlined />}
+              style={{ margin: 0 }}
+            >
+              Electric
+            </Tag>
+          )}
         </Space>
       </Col>
-      <Col span={4}>
-        <Space orientation="horizontal" style={{ width: "100%" }}>
-          <EuroOutlined />
-          {formatPrice(bike.priceCents)}
-        </Space>
+      <Col
+        span={5}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          fontWeight: "bold",
+        }}
+      >
+        {formatPrice(bike.priceCents)}
       </Col>
-      <Col span={4}>
+      <Col span={5}>
         <Row gutter={[4, 4]} justify="end">
           <Col>
             <ButtonLink to="/bikes/$bikeId" params={{ bikeId: bike.id }}>

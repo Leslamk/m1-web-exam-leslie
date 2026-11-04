@@ -1,7 +1,20 @@
-import { ArrowLeftOutlined, ShoppingOutlined } from "@ant-design/icons";
+import {
+  ArrowLeftOutlined,
+  ShoppingOutlined,
+  ThunderboltOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "@tanstack/react-router";
 import type { DescriptionsProps } from "antd";
-import { Card, Descriptions, Skeleton, Space } from "antd";
+import {
+  Card,
+  Col,
+  Descriptions,
+  Row,
+  Skeleton,
+  Space,
+  Statistic,
+  Tag,
+} from "antd";
 import Title from "antd/es/typography/Title";
 import type { ReactNode } from "react";
 import { useEffect } from "react";
@@ -27,15 +40,22 @@ export const BikeDetails = ({ bikeId }: BikeDetailsProps) => {
   const value = (content: ReactNode) =>
     isLoading ? <Skeleton.Input active size="small" /> : (content ?? "—");
 
-  const items: DescriptionsProps["items"] = [
+  const generalItems: DescriptionsProps["items"] = [
     { key: "brand", label: "Brand", children: value(bike?.brand) },
     { key: "model", label: "Model", children: value(bike?.model) },
-    { key: "category", label: "Category", children: value(bike?.category) },
+    {
+      key: "category",
+      label: "Category",
+      children: value(bike && <Tag color="blue">{bike.category}</Tag>),
+    },
     {
       key: "description",
       label: "Description",
       children: value(bike?.description),
     },
+  ];
+
+  const technicalItems: DescriptionsProps["items"] = [
     {
       key: "frameMaterial",
       label: "Frame material",
@@ -60,12 +80,16 @@ export const BikeDetails = ({ bikeId }: BikeDetailsProps) => {
     {
       key: "electric",
       label: "Electric",
-      children: value(bike && (bike.electric ? "Yes" : "No")),
-    },
-    {
-      key: "price",
-      label: "Price",
-      children: value(bike && formatPrice(bike.priceCents)),
+      children: value(
+        bike &&
+          (bike.electric ? (
+            <Tag color="green" icon={<ThunderboltOutlined />}>
+              Yes
+            </Tag>
+          ) : (
+            "No"
+          )),
+      ),
     },
   ];
 
@@ -83,21 +107,24 @@ export const BikeDetails = ({ bikeId }: BikeDetailsProps) => {
         Back to bikes
       </ButtonLink>
 
-      <Space align="center">
-        <ShoppingOutlined style={{ fontSize: "1.5rem" }} />
-        {isLoading ? (
-          <Skeleton.Input active size="large" />
-        ) : (
-          <Title level={2} style={{ margin: 0 }}>
-            {bike ? `${bike.brand} ${bike.model}` : "Bike not found"}
-          </Title>
-        )}
-      </Space>
-
-      <Card
-        title="Bike information"
+      <Row
+        justify="space-between"
+        align="middle"
         style={{ alignSelf: "stretch" }}
-        extra={
+      >
+        <Col>
+          <Space align="center">
+            <ShoppingOutlined style={{ fontSize: "1.5rem" }} />
+            {isLoading ? (
+              <Skeleton.Input active size="large" />
+            ) : (
+              <Title level={2} style={{ margin: 0 }}>
+                {bike ? `${bike.brand} ${bike.model}` : "Bike not found"}
+              </Title>
+            )}
+          </Space>
+        </Col>
+        <Col>
           <Space>
             <EditBikeButton bike={bike} updateBike={updateBike} />
             {bike && (
@@ -110,10 +137,30 @@ export const BikeDetails = ({ bikeId }: BikeDetailsProps) => {
               />
             )}
           </Space>
-        }
-      >
-        <Descriptions column={1} items={items} />
-      </Card>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]} style={{ alignSelf: "stretch" }}>
+        <Col xs={24} md={12}>
+          <Card title="General" style={{ height: "100%" }}>
+            <Descriptions column={1} items={generalItems} />
+          </Card>
+        </Col>
+        <Col xs={24} md={12}>
+          <Card title="Technical specifications" style={{ height: "100%" }}>
+            <Descriptions column={1} items={technicalItems} />
+          </Card>
+        </Col>
+        <Col span={24}>
+          <Card title="Price">
+            {isLoading ? (
+              <Skeleton.Input active size="large" />
+            ) : (
+              <Statistic value={bike ? formatPrice(bike.priceCents) : "—"} />
+            )}
+          </Card>
+        </Col>
+      </Row>
     </div>
   );
 };
