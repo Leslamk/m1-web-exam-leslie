@@ -77,9 +77,17 @@ describe("Bike shop API", () => {
     const all = await request(app.getHttpServer())
       .get("/customers")
       .expect(200);
-    expect(
-      (all.body as CustomerResponseDto[]).map((item) => item.lastName),
-    ).toEqual(["Bernard", "Durand", "Martin", "Moreau"]);
+    const page = all.body as {
+      totalCount: number;
+      customers: CustomerResponseDto[];
+    };
+    expect(page.totalCount).toBe(4);
+    expect(page.customers.map((item) => item.lastName)).toEqual([
+      "Bernard",
+      "Durand",
+      "Martin",
+      "Moreau",
+    ]);
     await request(app.getHttpServer())
       .patch(`/customers/${customer.id}`)
       .send({ city: "Paris", phone: "0600000000" })

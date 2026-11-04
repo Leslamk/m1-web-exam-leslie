@@ -24,3 +24,8 @@ export interface CreateCustomerModel {
 }
 
 export type UpdateCustomerModel = Partial<CreateCustomerModel>;
+
+export interface CustomersPageModel {
+  totalCount: number;
+  customers: CustomerModel[];
+}

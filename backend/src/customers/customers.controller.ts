@@ -9,7 +9,9 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  Query,
 } from "@nestjs/common";
+import { PaginationQueryDto } from "../shared/dto/pagination-query.dto";
 import { CustomersService } from "./customers.service";
 import {
   BikeSellResponseDto,
@@ -18,6 +20,7 @@ import {
 import { CreateBikeSellDto } from "./dto/create-bike-sell.dto";
 import { CreateCustomerDto } from "./dto/create-customer.dto";
 import { CustomerResponseDto } from "./dto/customer-response.dto";
+import { CustomersPageResponseDto } from "./dto/customers-page-response.dto";
 import { UpdateCustomerDto } from "./dto/update-customer.dto";
 import type {
   CreateCustomerModel,
@@ -31,9 +34,11 @@ export class CustomersController {
   ) {}
 
   @Get()
-  async findAll(): Promise<CustomerResponseDto[]> {
-    return (await this.service.findAll()).map((model) =>
-      CustomerResponseDto.fromModel(model),
+  async findAll(
+    @Query() query: PaginationQueryDto,
+  ): Promise<CustomersPageResponseDto> {
+    return CustomersPageResponseDto.fromModel(
+      await this.service.findAll({ page: query.page, limit: query.limit }),
     );
   }
 
