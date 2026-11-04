@@ -39,6 +39,7 @@ export function AppMenu() {
     <Menu
       selectedKeys={[getSelectedKey(pathname)]}
       mode="horizontal"
+      disabledOverflow
       items={items}
       style={{ backgroundColor: "transparent" }}
     />
